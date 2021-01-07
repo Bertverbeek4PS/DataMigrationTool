@@ -1,0 +1,16 @@
+{
+    "version":  "0.2.0",
+    "configurations":  [
+                           {
+                               "breakOnError":  true,
+                               "serverInstance":  "NL-dev-winter20-bve",
+                               "type":  "al",
+                               "server":  "http://localhost",
+                               "launchBrowser":  true,
+                               "name":  "winter20",
+                               "port":  7149,
+                               "authentication":  "Windows",
+                               "request":  "launch"
+                           }
+                       ]
+}
