@@ -92,7 +92,8 @@ codeunit 99999 "Move Migration Data"
                                     CounterTable := CounterTable + 1;
 
                                     FldRef := lOriginalTable.FIELD(FieldsNoToTransfer."No.");
-                                    FldRef.VALUE := lMigrationTable.FIELD(FieldsNoToTransfer."No.").VALUE;
+                                    if lMigrationTable.FieldExist(FieldsNoToTransfer."No.") then
+                                        FldRef.VALUE := lMigrationTable.FIELD(FieldsNoToTransfer."No.").VALUE;
 
                                     if GuiAllowed then
                                         Window.Update(4, Round(CounterTable / CounterTableTotal * 10000, 1));
