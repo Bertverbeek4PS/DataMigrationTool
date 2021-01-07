@@ -2,7 +2,7 @@ codeunit 99999 "Move Migration Data"
 {
     //This codeunit you can also run in a onpremise database with powershell.
     //This will move the data from the original table to the migration table.
-    //You can also do this with report 99950 "Move Migration Data"
+    //You can also do this with report 99999 "Move Migration Data"
     //This report is always multi company!
     //PowerShell commando is: Invoke-NAVCodeunit -ServerInstance 'ServerInstance' -CodeunitId 99999
 
