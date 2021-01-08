@@ -8,7 +8,7 @@ codeunit 99999 "Move Migration Data"
 
     trigger OnRun()
     begin
-        MoveMirgationData(CopyData::"To Migration Tables");
+        MoveMigrationData(CopyData::"To Migration Tables");
     end;
 
     var
@@ -20,7 +20,7 @@ codeunit 99999 "Move Migration Data"
         CopyData: Option "To Migration Tables","From Migration Tables";
 
 
-    procedure MoveMirgationData(CopyData: Option "To Migration Tables","From Migration Tables")
+    procedure MoveMigrationData(CopyData: Option "To Migration Tables","From Migration Tables")
     var
         IsHandled: Boolean;
     begin
@@ -64,7 +64,9 @@ codeunit 99999 "Move Migration Data"
         lMigrationTable: RecordRef;
         CounterTable: Integer;
         CounterTableTotal: Integer;
+        ErrorTxt: Text;
     begin
+        Clear(ErrorTxt);
         Company.Reset;
         if Company.FindSet then
             repeat
@@ -77,7 +79,33 @@ codeunit 99999 "Move Migration Data"
                 if GuiAllowed then
                     Window.Update(3, lOriginalTable.Name);
 
-                if CopyData = CopyData::"From Migration Tables" then begin
+                if CopyData = CopyData::"To Migration Tables" then begin
+                    lOriginalTable.Reset();
+                    CounterTableTotal := lOriginalTable.Count;
+                    if lOriginalTable.FindSet() then
+                        repeat
+                            FieldsNoToTransfer.Reset();
+                            FieldsNoToTransfer.SetRange(TableNo, lOriginalTable.Number);
+                            FieldsNoToTransfer.SetRange(Class, FieldsNoToTransfer.Class::Normal);
+                            FieldsNoToTransfer.SetRange(Enabled, true);
+                            FieldsNoToTransfer.SetFilter(ObsoleteState, '%1|%2', FieldsNoToTransfer.ObsoleteState::No, FieldsNoToTransfer.ObsoleteState::Pending);
+                            if FieldsNoToTransfer.FindSet() then
+                                repeat
+                                    CounterTable := CounterTable + 1;
+
+
+                                    if lMigrationTable.FieldExist(FieldsNoToTransfer."No.") then begin
+                                        FldRef := lMigrationTable.FIELD(FieldsNoToTransfer."No.");
+                                        FldRef.VALUE := lOriginalTable.FIELD(FieldsNoToTransfer."No.").VALUE;
+                                    end else
+                                        FillErrorText(ErrorTxt, FieldsNoToTransfer."No.");
+
+                                    if GuiAllowed then
+                                        Window.Update(4, Round(CounterTable / CounterTableTotal * 10000, 1));
+                                until FieldsNoToTransfer.Next() = 0;
+                            lMigrationTable.Insert(false);
+                        until lOriginalTable.Next() = 0;
+                end else begin
                     lMigrationTable.Reset();
                     CounterTableTotal := lMigrationTable.Count;
                     if lMigrationTable.FindSet() then
@@ -92,42 +120,25 @@ codeunit 99999 "Move Migration Data"
                                     CounterTable := CounterTable + 1;
 
                                     FldRef := lOriginalTable.FIELD(FieldsNoToTransfer."No.");
-                                    if lMigrationTable.FieldExist(FieldsNoToTransfer."No.") then
-                                        FldRef.VALUE := lMigrationTable.FIELD(FieldsNoToTransfer."No.").VALUE;
+                                    FldRef.VALUE := lMigrationTable.FIELD(FieldsNoToTransfer."No.").VALUE;
 
                                     if GuiAllowed then
                                         Window.Update(4, Round(CounterTable / CounterTableTotal * 10000, 1));
                                 until FieldsNoToTransfer.Next() = 0;
                             lOriginalTable.Insert(false)
                         until lMigrationTable.Next() = 0;
-                end else begin
-                    lOriginalTable.Reset();
-                    CounterTableTotal := lOriginalTable.Count;
-                    if lOriginalTable.FindSet() then
-                        repeat
-                            FieldsNoToTransfer.Reset();
-                            FieldsNoToTransfer.SetRange(TableNo, lOriginalTable.Number);
-                            FieldsNoToTransfer.SetRange(Class, FieldsNoToTransfer.Class::Normal);
-                            FieldsNoToTransfer.SetRange(Enabled, true);
-                            FieldsNoToTransfer.SetFilter(ObsoleteState, '%1|%2', FieldsNoToTransfer.ObsoleteState::No, FieldsNoToTransfer.ObsoleteState::Pending);
-                            if FieldsNoToTransfer.FindSet() then
-                                repeat
-                                    CounterTable := CounterTable + 1;
-
-                                    FldRef := lMigrationTable.FIELD(FieldsNoToTransfer."No.");
-                                    FldRef.VALUE := lOriginalTable.FIELD(FieldsNoToTransfer."No.").VALUE;
-
-                                    if GuiAllowed then
-                                        Window.Update(4, Round(CounterTable / CounterTableTotal * 10000, 1));
-                                until FieldsNoToTransfer.Next() = 0;
-                            lMigrationTable.Insert(false);
-                        until lOriginalTable.Next() = 0;
                 end;
 
                 lOriginalTable.Close();
                 lMigrationTable.Close();
 
             until Company.Next() = 0;
+
+        //Trow message for missing table    
+        if ErrorTxt <> '' then begin
+            ErrorTxt := 'The following fields does not excist in table ' + format(MigrationTable) + ' from table ' + format(OriginalTable) + ': ' + ErrorTxt;
+            Message(ErrorTxt);
+        end;
 
         if GuiAllowed then
             Window.Update(2, Round(Counter / CounterTotal * 10000, 1));
@@ -169,6 +180,15 @@ codeunit 99999 "Move Migration Data"
                 Recordref.Close();
             until Company.Next = 0;
 
+    end;
+
+    Procedure FillErrorText(var ErrorTxt: Text; FieldNumber: Integer)
+    begin
+        if ErrorTxt <> '' then begin
+            if StrPos(ErrorTxt, format(FieldNumber)) = 0 then
+                ErrorTxt := ErrorTxt + ', ' + Format(FieldNumber)
+        end else
+            ErrorTxt := Format(FieldNumber);
     end;
 
     [IntegrationEvent(false, false)]

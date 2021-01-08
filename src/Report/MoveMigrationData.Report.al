@@ -13,7 +13,7 @@ report 99999 "Move Migration Data"
             trigger OnAfterGetRecord()
             begin
                 if DeleteData = false then begin
-                    MoveMigrationData.MoveMirgationData(CopyData)
+                    MoveMigrationData.MoveMigrationData(CopyData)
                 end else begin
                     MoveMigrationData.DeleteMigrationData();
                 end;
