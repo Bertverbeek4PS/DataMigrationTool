@@ -42,6 +42,7 @@ codeunit 99999 "Move Migration Data"
         MoveDataToOtherTable(Database::"Installment", Database::"Installment Migr.", CopyData);
         MoveDataToOtherTable(Database::"Job", Database::"Job Migr.", CopyData);
         MoveDataToOtherTable(Database::"Plot Installment", Database::"Plot Installment Migr.", CopyData);
+        MoveDataToOtherTable(Database::"Project Installment", Database::"Project Installment Migr.", CopyData);
         MoveDataToOtherTable(Database::"Project CF Installm. Interval", Database::"Pr. CF Installm. Int. Migr.", CopyData);
         MoveDataToOtherTable(Database::"Purchase Installment", Database::"Purchase Installment Migr.", CopyData);
         MoveDataToOtherTable(Database::"QV - Project Installment", Database::"QV - Project Installment Migr.", CopyData);
