@@ -37,6 +37,9 @@ codeunit 99999 "Move Migration Data"
         if GuiAllowed then
             Window.Update(1, Text002);
 
+        if CopyData = CopyData::"To Migration Tables" then //so we can run it again!
+            DeleteMigrationData;
+
         MoveDataToOtherTable(Database::"Estimate", Database::"Estimate Migr.", CopyData);
         MoveDataToOtherTable(Database::"Dataset Calculated Field", Database::"Dataset Calculated Field Migr.", CopyData);
         MoveDataToOtherTable(Database::"Installment", Database::"Installment Migr.", CopyData);
@@ -126,7 +129,7 @@ codeunit 99999 "Move Migration Data"
                                     if GuiAllowed then
                                         Window.Update(4, Round(CounterTable / CounterTableTotal * 10000, 1));
                                 until FieldsNoToTransfer.Next() = 0;
-                            lOriginalTable.Insert(false)
+                            if lOriginalTable.Insert(false) then; //So you can run it multiple times
                         until lMigrationTable.Next() = 0;
                 end;
 
