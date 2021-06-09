@@ -3,12 +3,12 @@
     "configurations":  [
                            {
                                "breakOnError":  true,
-                               "serverInstance":  "NL-dev-winter20-bve",
+                               "serverInstance":  "TestNL",
                                "type":  "al",
-                               "server":  "http://localhost",
+                               "server":  "http://testnl.4ps.nl/",
                                "launchBrowser":  true,
-                               "name":  "winter20",
-                               "port":  7149,
+                               "name":  "TestNL",
+                               "port":  7049,
                                "authentication":  "Windows",
                                "request":  "launch",
                                "schemaUpdateMode": "ForceSync"

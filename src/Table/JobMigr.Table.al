@@ -1691,6 +1691,10 @@ table 99996 "Job Migr."
         {
             Caption = 'Invoicing Settlement Quantities with Installments';
         }
+        field(11012983; "Inv. Settl. Q. Install. Plot"; Boolean)
+        {
+            Caption = 'Invoicing Settlement Quantities with Installments per Plot';
+        }
         field(11012985; "Maintenance And Renovation"; Boolean)
         {
             Caption = 'Major Maintenance Project';
