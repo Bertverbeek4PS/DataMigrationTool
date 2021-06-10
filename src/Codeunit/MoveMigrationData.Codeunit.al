@@ -159,6 +159,7 @@ codeunit 99999 "Move Migration Data"
         DeleteData(Database::"Estimate Migr.");
         DeleteData(Database::"Dataset Calculated Field Migr.");
         DeleteData(Database::"Installment Migr.");
+        DeleteData(Database::"Project Installment Migr.");
         DeleteData(Database::"Job Migr.");
         DeleteData(Database::"Plot Installment Migr.");
         DeleteData(Database::"Pr. CF Installm. Int. Migr.");

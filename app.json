@@ -2,7 +2,7 @@
   "id": "3def354e-b7b4-40e6-8e76-af82c06a4798",
   "name": "4PS Data Migration Tool",
   "publisher": "4PS B.V.",
-  "version": "1.0.0.26",
+  "version": "1.0.0.27",
   "brief": "",
   "description": "Move data to migration tables which not contain the sql_variant type.",
   "privacyStatement": "",
