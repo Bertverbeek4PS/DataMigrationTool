@@ -49,7 +49,7 @@ codeunit 99999 "Move Migration Data"
         MoveDataToOtherTable(Database::"Project CF Installm. Interval", Database::"Pr. CF Installm. Int. Migr.", CopyData);
         MoveDataToOtherTable(Database::"Purchase Installment", Database::"Purchase Installment Migr.", CopyData);
         MoveDataToOtherTable(Database::"QV - Project Installment", Database::"QV - Project Installment Migr.", CopyData);
-        MoveDataToOtherTable(Database::"Sales Rental Appoint. Archive", Database::"Sales Rental Appointment Migr.", CopyData);
+        MoveDataToOtherTable(Database::"Sales Rental Appoint. Archive", Database::"Sales Rental App. Arch. Migr.", CopyData);
         MoveDataToOtherTable(Database::"Sales Rental Appointment", Database::"Sales Rental Appointment Migr.", CopyData);
         MoveDataToOtherTable(Database::"Service-Contract", Database::"Service-Contract Migr.", CopyData);
         MoveDataToOtherTable(Database::"Text Bar Code Scanner", Database::"Text Bar Code Scanner Migr.", CopyData);
@@ -166,7 +166,7 @@ codeunit 99999 "Move Migration Data"
         DeleteData(Database::"Purchase Installment Migr.");
         DeleteData(Database::"QV - Project Installment Migr.");
         DeleteData(Database::"Sales Rental Appointment Migr.");
-        DeleteData(Database::"Sales Rental Appointment Migr.");
+        DeleteData(Database::"Sales Rental App. Arch. Migr.");
         DeleteData(Database::"Service-Contract Migr.");
         DeleteData(Database::"Text Bar Code Scanner Migr.");
     end;
